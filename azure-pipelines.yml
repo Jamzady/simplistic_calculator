@@ -36,8 +36,8 @@ jobs:
           versionSpec: '16.14.2'
       
       - script: |
-          yarn install --frozen-lockfile --network-concurrency 1
-        displayName: 'React Native build'
+          brew install --cask flutter
+        displayName: 'install flutter'
 
       - task: UseRubyVersion@0
         displayName: 'Set Ruby version'
