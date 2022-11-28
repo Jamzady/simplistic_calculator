@@ -55,7 +55,7 @@ jobs:
           jdkSourceOption: 'PreInstalled'
 
       - script: |
-          bundle exec fastlane android build
+          (cd android && bundle exec fastlane android build)
           cp android/app/build/outputs/apk/release/app-release.apk "flutter-$(Build.BuildNumber).apk"
         displayName: 'build android'
         env:
