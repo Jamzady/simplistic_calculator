@@ -56,7 +56,7 @@ jobs:
 
       - script: |
           (cd android && bundle exec fastlane android build)
-          cp android/app/build/outputs/apk/release/app-release.apk "flutter-$(Build.BuildNumber).apk"
+          cp build/app/outputs/flutter-apk/app-release.apk "flutter-$(Build.BuildNumber).apk"
         displayName: 'build android'
         env:
           CI: true  
