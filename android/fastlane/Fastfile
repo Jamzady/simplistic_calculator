@@ -25,6 +25,6 @@ platform :android do
   #   upload_to_play_store
   desc 'Build android app'
   lane :build do
-    gradle(task: 'assemble', build_type: 'release')
+    sh "flutter build appbundle -v"
   end
 end
