@@ -53,6 +53,12 @@ jobs:
           versionSpec: '11'
           jdkArchitectureOption: 'x64'
           jdkSourceOption: 'PreInstalled'
+      
+      - script: |
+          (cd android && flutter build appbundle)
+        displayName: 'Flutter build'
+        env:
+          CI: true  
 
       - script: |
           (cd android && bundle exec fastlane android build)
