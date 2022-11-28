@@ -1,0 +1,89 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - main
+    - dev
+    - releases/*
+
+pr:
+  branches:
+    include:
+      - main
+      - dev
+      - releases/*
+
+variables:
+  - name: GRADLE_USER_HOME
+    value: '$(Pipeline.Workspace)/.gradle'
+  - name: isMainBranches
+    value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/dev'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))]
+
+jobs:
+  - job: FlutterAppBuild
+    timeoutInMinutes: 210
+    pool:
+      vmImage: macos-12
+
+    steps:
+      - task: Cache@2
+        inputs:
+          key: '"yarn" | "$(Agent.OS)" | yarn.lock'
+          restoreKeys: |
+            yarn | "$(Agent.OS)"
+            yarn
+          path: $(YARN_CACHE_FOLDER)
+        displayName: 'Cache Yarn Packages'
+
+
+      - task: Cache@2
+        inputs:
+          key: '"gradleCache" | "$(Agent.OS)" | yarn.lock'
+          restoreKeys: |
+            gradleCache | "$(Agent.OS)"
+            gradleCache
+          path: '$(GRADLE_USER_HOME)/caches'
+        displayName: 'Cache gradle'
+
+      - task: NodeTool@0
+        displayName: 'install node'
+        inputs:
+          versionSpec: '16.14.2'
+      
+      - script: |
+          yarn install --frozen-lockfile --network-concurrency 1
+        displayName: 'React Native build'
+
+      - task: UseRubyVersion@0
+        displayName: 'Set Ruby version'
+        inputs:
+          versionSpec: '2.7.x'
+
+      - script: 'bundle install'
+        displayName: 'install ruby dependencies'
+
+      - task: JavaToolInstaller@0
+        displayName: 'Set Java Version'
+        inputs:
+          versionSpec: '11'
+          jdkArchitectureOption: 'x64'
+          jdkSourceOption: 'PreInstalled'
+
+      - script: |
+          bundle exec fastlane android build
+          cp android/app/build/outputs/apk/release/app-release.apk "flutter-$(Build.BuildNumber).apk"
+        displayName: 'build android'
+        workingDirectory: android/
+        env:
+          CI: true  
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish android artifacts'
+        inputs:
+          PathtoPublish: 'android/app/build/outputs/apk/release'
+          ArtifactName: 'android'
+          publishLocation: 'Container'
