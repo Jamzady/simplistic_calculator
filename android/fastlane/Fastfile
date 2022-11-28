@@ -25,6 +25,6 @@ platform :android do
   #   upload_to_play_store
   desc 'Build android app'
   lane :build do
-    sh "flutter build appbundle -v"
+    sh "flutter build apk -v"
   end
 end
