@@ -64,6 +64,6 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: 'Publish android artifacts'
         inputs:
-          PathtoPublish: 'android/build/app/outputs/flutter-apk'
+          PathtoPublish: 'build/app/outputs/flutter-apk'
           ArtifactName: 'android'
           publishLocation: 'Container'
