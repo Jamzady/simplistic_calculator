@@ -30,16 +30,6 @@ jobs:
       vmImage: macos-12
 
     steps:
-
-      - task: Cache@2
-        inputs:
-          key: '"gradleCache" | "$(Agent.OS)" | yarn.lock'
-          restoreKeys: |
-            gradleCache | "$(Agent.OS)"
-            gradleCache
-          path: '$(GRADLE_USER_HOME)/caches'
-        displayName: 'Cache gradle'
-
       - task: NodeTool@0
         displayName: 'install node'
         inputs:
