@@ -64,7 +64,7 @@ jobs:
       - task: XplatGenerateReleaseNotes@3
         displayName: Generate release notes
         inputs:
-          outputfile: '$(Build.ArtifactStagingDirectory)\releasenotes.md'
+          outputfile: '$(Build.ArtifactStagingDirectory)/releasenotes.md'
           outputVariableName: OutputText
           templateLocation: InLine
           inlinetemplate: |
@@ -124,4 +124,4 @@ jobs:
         displayName: publish doc
         inputs:
           artifactName: 'OutputText'
-          targetPath: '$(Build.ArtifactStagingDirectory)\releasenotes.md'
+          targetPath: '$(Build.ArtifactStagingDirectory)/releasenotes.md'
