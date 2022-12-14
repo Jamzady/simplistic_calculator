@@ -30,10 +30,10 @@ jobs:
       vmImage: macos-12
 
     steps:
-      - task: NodeTool@0
-        displayName: 'install node'
-        inputs:
-          versionSpec: '16.14.2'
+    #   - task: NodeTool@0
+    #     displayName: 'install node'
+    #     inputs:
+    #       versionSpec: '16.14.2'
       
       - script: |
           brew install --cask flutter
